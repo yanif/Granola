@@ -221,6 +221,9 @@
             if ([[metadata valueForKey:key] isKindOfClass:[NSDate class]]){
                 NSDate *dateMetadataValue = [metadata valueForKey:key];
                 [serializedArray addObject:@{@"key":key,@"value":[dateMetadataValue RFC3339String]}];
+            } else if ([[metadata valueForKey: key] isKindOfClass:[HKQuantity class]]) {
+                HKQuantity* quantity = [metadata valueForKey:key];
+                [serializedArray addObject: @{@"key":key,@"value":[OMHSerializer parseUnitFromQuantity:quantity]}];
             }
             else{
                 [serializedArray addObject:@{@"key":key,@"value":[metadata valueForKey:key]}];
